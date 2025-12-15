@@ -1,0 +1,23 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: nightly-backup
+spec:
+  # 1. THE SCHEDULE
+  # "Run at 00:00 (Midnight) every day"
+  # Format: Minute | Hour | Day of Month | Month | Day of Week
+  schedule: "0 0 * * *" 
+  
+  # 2. THE JOB TEMPLATE
+  # This describes the Job that will be created
+  jobTemplate:
+    spec:
+      # 3. THE POD TEMPLATE
+      # This describes the Pod inside the Job
+      template:
+        spec:
+          containers:
+          - name: backup-container
+            image: my-backup-image:latest
+            command: ["/bin/sh", "-c", "echo Backing up db... && sleep 10"]
+          restartPolicy: OnFailure

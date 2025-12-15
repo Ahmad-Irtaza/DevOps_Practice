@@ -1,0 +1,22 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: pi-calculator-job
+spec:
+  # RETRIES
+  # If the pod fails (crashes), how many times should we try again?
+  backoffLimit: 4
+
+  template:
+    spec:
+      containers:
+      - name: pi
+        image: perl
+        # A command that takes 10 seconds then stops
+        command: ["perl",  "-Mbignum=bpi", "-wle", "print bpi(2000)"]
+      
+      # CRITICAL RULE:
+      # You MUST set this to OnFailure or Never.
+      # If you set this to 'Always' (the default), the Job will finish, 
+      # and Kubernetes will restart it again... and again... forever.
+      restartPolicy: OnFailure

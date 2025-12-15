@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: storage-pod
+spec:
+  containers:
+  - name: my-app
+    image: nginx
+    
+    # PART 1: THE CABLE (Where to plug it in)
+    volumeMounts:
+    - name: my-data-storage   # <--- (A) "Plug in the disk named 'my-data-storage'..."
+      mountPath: /var/www/html # <--- "...into this folder inside the container."
+
+  # PART 2: THE HARD DRIVE (What is it?)
+  volumes:
+  - name: my-data-storage     # <--- (B) This name matches (A)
+    emptyDir: {}              # <--- The type of storage (Scratchpad)

@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  # 1. DEPLOYMENT NAME
+  # The name of this "Manager" object.
+  name: nginx-deployment
+  
+spec:
+  # 2. DESIRED STATE
+  # How many workers do you want?
+  replicas: 3
+  
+  # 3. THE SELECTOR (The most confusing part!)
+  # The Deployment needs to know which Pods belong to it.
+  # It says: "I manage any Pod that has the sticker 'app: nginx'"
+  selector:
+    matchLabels:
+      app: nginx
+
+  # 4. THE BLUEPRINT (Pod Template)
+  # EVERYTHING below this line is literally a Pod configuration.
+  # The Deployment uses this template to stamp out new Pods.
+  template:
+    metadata:
+      # This MUST match the selector above (point #3)
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:1.14.2
+        ports:
+        - containerPort: 80

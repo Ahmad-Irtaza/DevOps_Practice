@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: website-manager  # Name of the Deployment (The Boss)
+spec:
+  replicas: 3
+  
+  # THE SEARCH FILTER
+  # "I only care about pods that have the label 'type: frontend'"
+  selector:
+    matchLabels:
+      type: frontend   # <--- (A) THIS...
+
+  template:
+    metadata:
+      # THE BADGE
+      # "When I make a new pod, I will stick this label on it."
+      labels:
+        type: frontend # <--- (B) ...MUST MATCH THIS.
+    spec:
+      containers:
+      # THE INTERNAL NICKNAME
+      # "I will call this specific container 'web-server-01' in the logs"
+      - name: web-server-01  # <--- (C) TOTALLY DIFFERENT! No relation to A or B.
+        image: nginx:1.14.2
+        ports:
+        - containerPort: 80

@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  # 1. THE POD'S ID CARD
+  # This is the unique name of this specific Pod object in the cluster.
+  # Commands like 'kubectl get pod nginx-pod' use this name.
+  name: nginx-pod 
+  
+  # 2. THE STICKY NOTE (Categorization)
+  # This is a tag used to group pods together. 
+  # Services and Deployments use this to find this pod. 
+  # It could be anything (e.g., app: my-web-server).
+  labels:
+    app: nginx 
+
+spec:
+  containers:
+  # 3. THE INTERNAL CONTAINER NAME
+  # If you have multiple containers in one pod, this distinguishes them.
+  # Used for logs: 'kubectl logs nginx-pod -c nginx'
+  - name: nginx 
+  
+    # 4. THE SOFTWARE PACKAGE
+    # This is the actual software to download from Docker Hub.
+    # You cannot change this arbitrarily; it must match a real image registry name.
+    image: nginx:stable 
+  
+    ports:
+    - containerPort: 80

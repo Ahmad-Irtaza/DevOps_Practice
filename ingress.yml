@@ -1,0 +1,32 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: my-website-ingress
+  annotations:
+    # This tells the cluster "Use the Nginx Ingress Controller to handle this"
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  ingressClassName: nginx
+  rules:
+  # RULE 1: TRAFFIC FOR "myapp.com"
+  - host: myapp.com
+    http:
+      paths:
+      
+      # Path A: /shop -> Goes to Shop Service
+      - path: /shop
+        pathType: Prefix
+        backend:
+          service:
+            name: shop-service   # <--- Must match your Service Name
+            port:
+              number: 80         # <--- Must match your Service Port
+
+      # Path B: /blog -> Goes to Blog Service
+      - path: /blog
+        pathType: Prefix
+        backend:
+          service:
+            name: blog-service
+            port:
+              number: 80

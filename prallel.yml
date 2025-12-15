@@ -1,0 +1,20 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: parallel-job
+spec:
+  # THE GOAL:
+  # "I want this job to succeed 10 times in total."
+  completions: 10
+
+  # THE SPEED:
+  # "Only run 2 pods at the same time."
+  parallelism: 2
+
+  template:
+    spec:
+      containers:
+      - name: worker
+        image: busybox
+        command: ['sh', '-c', 'echo "Processing item..." && sleep 5']
+      restartPolicy: OnFailure
